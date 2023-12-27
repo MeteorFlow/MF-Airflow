@@ -1,0 +1,22 @@
+{
+  "postgres_conn": {
+    "conn_type": "postgres",
+    "description": "",
+    "login": "airflow",
+    "password": "airflow",
+    "host": "localhost",
+    "port": 5432,
+    "schema": "airflow_db",
+    "extra": ""
+  },
+  "sftp_conn": {
+    "conn_type": "sftp",
+    "description": "",
+    "login": "dev",
+    "password": "dev",
+    "host": "localhost",
+    "port": null,
+    "schema": "",
+    "extra": ""
+  }
+}

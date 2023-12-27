@@ -1,0 +1,11 @@
+# Requirement for Airflow need a strict constraints to make sure it is replicable.
+
+apache-airflow
+
+# Supporting libraries
+apache-airflow-providers-sftp
+apache-airflow-providers-postgres
+
+arm_pyart
+
+-c "https://raw.githubusercontent.com/apache/airflow/constraints-2.8.0/constraints-3.11.txt"

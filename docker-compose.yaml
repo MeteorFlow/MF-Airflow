@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:15.5-alpine3.18
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - dev_pg_volume:/var/lib/postgresql/data
+      - ./dev-configs/pg_init.sql:/docker-entrypoint-initdb.d/pg_init.sql
+    ports:
+      - "5432:5432"
+
+  sftp-server:
+    image: emberstack/sftp:build-5.1.70
+    ports:
+      - "22:22"
+    volumes:
+      - ./dev-configs/sftp-configs.json:/app/config/sftp.json
+      - ./data/sftp:/home/dev/sftp
+
+volumes:
+  dev_pg_volume:
