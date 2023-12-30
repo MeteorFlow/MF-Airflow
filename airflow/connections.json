@@ -18,5 +18,15 @@
     "port": null,
     "schema": "",
     "extra": ""
+  },
+  "ssh_conn": {
+    "conn_type": "ssh",
+    "description": "",
+    "login": "dev",
+    "password": "dev",
+    "host": "localhost",
+    "port": null,
+    "schema": "",
+    "extra": ""
   }
 }

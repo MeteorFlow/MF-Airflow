@@ -1,3 +1,4 @@
+import logging
 import pathlib
 
 import pendulum
@@ -8,10 +9,10 @@ from airflow.exceptions import AirflowSkipException
 from airflow.hooks.base import BaseHook
 from airflow.models import Variable
 from airflow.providers.sftp.hooks.sftp import SFTPHook
-from airflow.providers.sftp.operators.sftp import SFTPOperation, SFTPOperator
+# from airflow.providers.sftp.operators.sftp import SFTPOperation, SFTPOperator
 
 INPUT_FILE_PATH = "/sftp/test.txt"
-LOCAL_TMP_PATH = "/tmp/test.txt"
+LOCAL_TMP_PATH = "/Users/ducth/PycharmProjects/MeteorFlow/MF-Airflow/data/UF/NHB190513012007.RAW23DN"
 
 with DAG(
     "process_input_data",
@@ -37,15 +38,27 @@ with DAG(
 
         Variable.set("sftp_prev_ts", file_mod_time)
 
-    download_sftp_files = SFTPOperator(
-        task_id="download_sftp_files",
-        sftp_hook=BaseHook.get_hook("sftp_conn"),  # type: ignore
-        operation=SFTPOperation.GET,
-        remote_filepath=INPUT_FILE_PATH,
-        local_filepath=LOCAL_TMP_PATH,
-    )
+    # download_sftp_files = SFTPOperator(
+    #     task_id="download_sftp_files",
+    #     ssh_conn_id="ssh_conn",
+    #     operation=SFTPOperation.GET,
+    #     remote_filepath=INPUT_FILE_PATH,
+    #     local_filepath=LOCAL_TMP_PATH,
+    # )
 
-    check_for_sftp_file() >> download_sftp_files
+    @task()
+    def transform_input_file():
+        import pyart
+        from pyart.core import Radar
+
+        logger = logging.getLogger(__name__)
+
+        input_file: Radar = pyart.io.read_sigmet(LOCAL_TMP_PATH)
+        logger.info(input_file.time)
+
+    transform_input_file()
+
+    # check_for_sftp_file() >> download_sftp_files
 
 
 if __name__ == "__main__":

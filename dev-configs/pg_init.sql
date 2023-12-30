@@ -7,3 +7,4 @@ GRANT ALL PRIVILEGES ON DATABASE airflow_db TO airflow;
 
 /* Setup Backend database */
 CREATE DATABASE backend WITH OWNER postgres;
+GRANT ALL PRIVILEGES ON DATABASE backend TO airflow;
