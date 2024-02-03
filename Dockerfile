@@ -10,8 +10,9 @@ WORKDIR /opt/airflow
 COPY --chown=airflow requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY --chown=airflow rs_airflow rs_airflow
-RUN pip install -e ./rs_airflow
+# Installing customized library
+# COPY --chown=airflow rs_airflow rs_airflow
+# RUN pip install -e ./rs_airflow
 
 COPY --chown=airflow airflow/webserver_config.py .
 # COPY --chown=airflow airflow/dags ./dags
