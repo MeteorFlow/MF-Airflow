@@ -8,4 +8,4 @@ apache-airflow-providers-postgres
 
 arm_pyart
 
--c "https://raw.githubusercontent.com/apache/airflow/constraints-2.8.0/constraints-3.11.txt"
+-c "https://raw.githubusercontent.com/apache/airflow/constraints-2.8.1/constraints-3.11.txt"
