@@ -25,13 +25,14 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}
-          tags: type=semver,pattern={{version}}
-
+          images: ghcr.io/mf-airflow
+          tags: |
+            type=raw,value=latest
 
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
+          platforms: linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
