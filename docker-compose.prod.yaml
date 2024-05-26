@@ -1,3 +1,5 @@
+name: prod-airflow
+
 services:
   airflow-db:
     image: postgres:15.6-alpine3.19
@@ -6,7 +8,7 @@ services:
       - POSTGRES_USER=${AIRFLOW_DB_USER}
       - POSTGRES_PASSWORD=${AIRFLOW_DB_PASSWORD}
     volumes:
-      - dev_pg_volume:/var/lib/postgresql/data
+      - pg_volume:/var/lib/postgresql/data
     expose:
       - 5432
     ports:
@@ -25,9 +27,12 @@ services:
     environment:
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${AIRFLOW_DB_USER}:${AIRFLOW_DB_PASSWORD}@airflow-db/${AIRFLOW_DB}
       - AIRFLOW__CORE__FERNET_KEY=${AIRFLOW_DB_FERNET_KEY}
+    ports:
+      - 8080:8080
+    command: ["airflow", "standalone"]
 
 volumes:
-  dev_pg_volume:
+  pg_volume:
 
 networks:
   meteorflow-network:
