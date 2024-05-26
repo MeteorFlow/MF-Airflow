@@ -12,7 +12,9 @@ from airflow.providers.sftp.hooks.sftp import SFTPHook
 # from airflow.providers.sftp.operators.sftp import SFTPOperation, SFTPOperator
 
 INPUT_FILE_PATH = "/sftp/test.txt"
-LOCAL_TMP_PATH = "/Users/ducth/PycharmProjects/MeteorFlow/MF-Airflow/data/UF/NHB190513012007.RAW23DN"
+LOCAL_TMP_PATH = (
+    "/Users/ducth/PycharmProjects/MeteorFlow/MF-Airflow/data/UF/NHB190513012007.RAW23DN"
+)
 
 with DAG(
     "process_input_data",

@@ -1,13 +1,13 @@
 services:
   postgres:
     image: postgres:15.6-alpine3.19
+    restart: unless-stopped
     environment:
       - POSTGRES_DB=airflow
       - POSTGRES_USER=airflow
       - POSTGRES_PASSWORD=password
     volumes:
       - dev_pg_volume:/var/lib/postgresql/data
-      - ./dev-configs/pg_init.sql:/docker-entrypoint-initdb.d/pg_init.sql
     ports:
       - "5432:5432"
 
