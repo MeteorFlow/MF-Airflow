@@ -18,7 +18,7 @@ LOCAL_TMP_PATH = (
 
 with DAG(
     "process_input_data",
-    start_date=pendulum.datetime(2023, 12, 27, tz="Asia/Ho_chi_minh"),
+    start_date=pendulum.datetime(2023, 12, 27, tz="Asia/Ho_Chi_Minh"),
     schedule="*/1 * * * *",
 ) as dag:
 
