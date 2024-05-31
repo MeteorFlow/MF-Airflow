@@ -78,14 +78,14 @@ with DAG(
                 reflectivity_byte_stream.seek(0)
                 s3_client.upload_fileobj(
                     Fileobj=reflectivity_byte_stream,
-                    Key=f"reflectivity/{logical_date.format('YYMMDD')}T{file_name_matches.group(2)}Z",
+                    Key=f"reflectivity/{logical_date.format('YYYYMMDD')}T{file_name_matches.group(2)}Z",
                     Bucket=DEST_BUCKET,
                 )
 
             s3_hook.copy_object(
                 source_bucket_key=file_name,
                 source_bucket_name=SOURCE_BUCKET,
-                dest_bucket_key=f"{logical_date.format('YYMMDD')}T{file_name_matches.group(2)}Z",
+                dest_bucket_key=f"{logical_date.format('YYYYMMDD')}T{file_name_matches.group(2)}Z",
                 dest_bucket_name=DEST_BUCKET,
             )
 
