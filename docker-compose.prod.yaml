@@ -22,15 +22,6 @@ services:
           cpus: "1"
           memory: 200M
 
-  airflow:
-    image: ghcr.io/meteorflow/mf-airflow:latest
-    environment:
-      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${AIRFLOW_DB_USER}:${AIRFLOW_DB_PASSWORD}@airflow-db/${AIRFLOW_DB}
-      - AIRFLOW__CORE__FERNET_KEY=${AIRFLOW_DB_FERNET_KEY}
-    ports:
-      - 8080:8080
-    command: ["airflow", "standalone"]
-
 volumes:
   pg_volume:
 
