@@ -6,6 +6,6 @@ apache-airflow
 apache-airflow-providers-postgres
 apache-airflow-providers-amazon
 
-xarray
+--only-binary arm_pyart
 
 -c "https://raw.githubusercontent.com/apache/airflow/constraints-2.9.1/constraints-3.11.txt"

@@ -41,8 +41,9 @@ with DAG(
         import logging
 
         import io
+        import tempfile
+        import pyart
         import numpy
-        import xarray
 
         logical_date: pendulum.DateTime = context["logical_date"].in_tz("Asia/Ho_Chi_Minh")
         expected_file_name_prefix = f"NHB{logical_date.format('YYMMDD')}"
@@ -64,24 +65,22 @@ with DAG(
                 logging.warning("File name does not match convention, skipped")
                 continue
 
-            s3_client = s3_hook.get_conn()
+            with tempfile.NamedTemporaryFile() as temp_file:
+                s3_client = s3_hook.get_conn()
 
-            download_stream = io.BytesIO()
-            s3_client.download_fileobj(Key=file_name, Bucket=SOURCE_BUCKET, Fileobj=download_stream)
+                s3_client.download_fileobj(Key=file_name, Bucket=SOURCE_BUCKET, Fileobj=temp_file)
+                radar_content = pyart.io.read_sigmet(temp_file.name)
 
-            download_stream.seek(0)
-            radar_content = xarray.load_dataset(download_stream, engine="iris", group="sweep_0")
+                reflectivity_byte_stream = io.BytesIO()
+                numpy.save(reflectivity_byte_stream, radar_content.fields["reflectivity"]["data"])
 
-            reflectivity_byte_stream = io.BytesIO()
-            numpy.save(reflectivity_byte_stream, radar_content.to_dataarray("DBZH").to_numpy())
-
-            # Reset stream to write
-            reflectivity_byte_stream.seek(0)
-            s3_client.upload_fileobj(
-                Fileobj=reflectivity_byte_stream,
-                Key=f"reflectivity/{logical_date.format('YYYYMMDD')}T{file_name_matches.group(2)}Z",
-                Bucket=DEST_BUCKET,
-            )
+                # Reset stream to write
+                reflectivity_byte_stream.seek(0)
+                s3_client.upload_fileobj(
+                    Fileobj=reflectivity_byte_stream,
+                    Key=f"reflectivity/{logical_date.format('YYYYMMDD')}T{file_name_matches.group(2)}Z",
+                    Bucket=DEST_BUCKET,
+                )
 
             s3_hook.copy_object(
                 source_bucket_key=file_name,
