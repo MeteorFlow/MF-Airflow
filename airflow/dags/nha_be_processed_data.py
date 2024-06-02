@@ -95,4 +95,4 @@ with DAG(
 
 
 if __name__ == "__main__":
-    dag.test(execution_date=pendulum.datetime(2019, 5, 10))
+    dag.test(execution_date=pendulum.datetime(2019, 5, 11, tz="Asia/Ho_Chi_Minh"))
